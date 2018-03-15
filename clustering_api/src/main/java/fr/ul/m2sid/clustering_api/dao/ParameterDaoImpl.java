@@ -1,10 +1,12 @@
 package fr.ul.m2sid.clustering_api.dao;
 
 import fr.ul.m2sid.clustering_api.entity.Parametre;
+import org.springframework.stereotype.Service;
 
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+@Service
 public class ParameterDaoImpl implements ParameterDao {
 
     @Override

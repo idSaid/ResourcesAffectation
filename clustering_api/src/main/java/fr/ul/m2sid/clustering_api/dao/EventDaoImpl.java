@@ -3,9 +3,11 @@ package fr.ul.m2sid.clustering_api.dao;
 import fr.ul.m2sid.clustering_api.entity.Event;
 import fr.ul.m2sid.clustering_api.util.Converter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.sql.PreparedStatement;
 
+@Service
 public class EventDaoImpl implements EventDao {
 
     @Autowired

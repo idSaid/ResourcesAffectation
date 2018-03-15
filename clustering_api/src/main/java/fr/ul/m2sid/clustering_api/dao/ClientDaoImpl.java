@@ -1,11 +1,13 @@
 package fr.ul.m2sid.clustering_api.dao;
 
 import fr.ul.m2sid.clustering_api.entity.Client;
+import org.springframework.stereotype.Service;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+@Service
 public class ClientDaoImpl implements ClientDao {
 
     @Override
