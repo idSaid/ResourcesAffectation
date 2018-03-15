@@ -12,11 +12,11 @@ import java.util.Set;
 @Service
 public class Mapper {
 
-    public Map<Integer, Integer> mapEventstoCallCenters(List<Event> eventsToAffect, Set<Agent> callCenters) {
-        Map<Integer, Integer> solution = new HashMap<>();
+    public Map<String, Integer> mapEventstoCallCenters(List<Event> eventsToAffect, Set<Agent> callCenters) {
+        Map<String, Integer> solution = new HashMap<>();
         Integer idRandomCallCenter = callCenters.iterator().next().getId();
         for (Event event: eventsToAffect) {
-            solution.put(event.getIdentifiant(),idRandomCallCenter);
+            solution.put(event.getIdentifiant()+event.getEmplacement(),idRandomCallCenter);
         }
         return solution;
     }

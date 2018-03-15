@@ -12,10 +12,12 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.io.IOException;
 import java.util.*;
 
+@RestController
 public class AffectationController {
 
     @Autowired
@@ -29,12 +31,12 @@ public class AffectationController {
 
     @PostMapping(value = "/affectEvents", consumes = "application/json", produces = "application/json")
     @ResponseBody
-    public ResponseEntity<Map<Integer, Integer>> affectEventsGeneticMethod(@RequestBody TreeSet<Event> sortedEvents) throws IOException {
+    public ResponseEntity<Map<String, Integer>> affectEventsGeneticMethod(@RequestBody TreeSet<Event> sortedEvents) throws IOException {
 
         ArrayList<Agent> agents = new ArrayList<Agent>(agentDao.getFreeAgents());
         System.out.println(agents);
         Set<Map<Event, Agent>> bestSolutions;
-        Map<Integer, Integer> bestSolutionsInteger= new HashMap<>();
+        Map<String, Integer> bestSolutionsInteger= new HashMap<>();
         Set<Agent> callCenters;
 
         if(agents.size()<sortedEvents.size()){
@@ -59,7 +61,7 @@ public class AffectationController {
             }
 
 
-            Map<Integer, Integer> eventsCallCenters = mapper.mapEventstoCallCenters(eventsToAffectToCallCenters,callCenters);
+            Map<String, Integer> eventsCallCenters = mapper.mapEventstoCallCenters(eventsToAffectToCallCenters,callCenters);
 
             bestSolutionsInteger.putAll(eventsCallCenters);
 
@@ -73,8 +75,8 @@ public class AffectationController {
         return new ResponseEntity<>(bestSolutionsInteger, HttpStatus.OK);
     }
 
-    private Map<Integer, Integer> extractBestSolutionsIds(Set<Map<Event, Agent>> bestSolution){
-        Map<Integer, Integer> convetedEventAgentIds = new HashMap<Integer, Integer>();
+    private Map<String, Integer> extractBestSolutionsIds(Set<Map<Event, Agent>> bestSolution){
+        Map<String, Integer> convetedEventAgentIds = new HashMap<>();
 
         for (Map<Event, Agent> key:
                 bestSolution) {
@@ -83,7 +85,8 @@ public class AffectationController {
             {
                 System.out.println(entry.getKey() + "/" + entry.getValue());
 
-                Integer eventID = ((Event)entry.getKey()).getIdentifiant();
+                Event event = ((Event)entry.getKey());
+                String eventID = event.getIdentifiant()+event.getEmplacement();
                 Integer agentID = ((Agent)entry.getValue()).getId();
 
                 convetedEventAgentIds.put(eventID, agentID);
