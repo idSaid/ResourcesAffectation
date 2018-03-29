@@ -22,21 +22,21 @@ public class Mapper {
     @Autowired
     private GeneticAffectation geneticAffectation;
 
-    public Map<String, Integer> mapEventstoCallCenters(List<Event> eventsToAffect, Set<Agent> callCenters) {
-        Map<String, Integer> solution = new HashMap<>();
+    public Map<Integer, Integer> mapEventstoCallCenters(List<Event> eventsToAffect, Set<Agent> callCenters) {
+        Map<Integer, Integer> solution = new HashMap<>();
         Integer idRandomCallCenter = callCenters.iterator().next().getId();
         for (Event event: eventsToAffect) {
-            solution.put(event.getIdentifiant()+event.getEmplacement(),idRandomCallCenter);
+            solution.put(event.getIdentifiant(),idRandomCallCenter);
         }
         return solution;
     }
 
-    public Map<String, Integer> affectEventsGeneticMethod(@RequestBody TreeSet<Event> sortedEvents) throws IOException {
+    public Map<Integer, Integer> affectEventsGeneticMethod(@RequestBody TreeSet<Event> sortedEvents) throws IOException {
 
         ArrayList<Agent> agents = new ArrayList<Agent>(agentDao.getFreeAgents());
         System.out.println(agents);
         Set<Map<Event, Agent>> bestSolutions;
-        Map<String, Integer> bestSolutionsInteger= new HashMap<>();
+        Map<Integer, Integer> bestSolutionsInteger= new HashMap<>();
         Set<Agent> callCenters;
 
         if(agents.size()<sortedEvents.size()){
@@ -61,7 +61,7 @@ public class Mapper {
             }
 
 
-            Map<String, Integer> eventsCallCenters = mapEventstoCallCenters(eventsToAffectToCallCenters,callCenters);
+            Map<Integer, Integer> eventsCallCenters = mapEventstoCallCenters(eventsToAffectToCallCenters,callCenters);
 
             bestSolutionsInteger.putAll(eventsCallCenters);
 
@@ -75,8 +75,8 @@ public class Mapper {
         return bestSolutionsInteger;
     }
 
-    private Map<String, Integer> extractBestSolutionsIds(Set<Map<Event, Agent>> bestSolution){
-        Map<String, Integer> convetedEventAgentIds = new HashMap<>();
+    private Map<Integer, Integer> extractBestSolutionsIds(Set<Map<Event, Agent>> bestSolution){
+        Map<Integer, Integer> convetedEventAgentIds = new HashMap<>();
 
         for (Map<Event, Agent> key:
                 bestSolution) {
@@ -86,7 +86,7 @@ public class Mapper {
                 System.out.println(entry.getKey() + "/" + entry.getValue());
 
                 Event event = ((Event)entry.getKey());
-                String eventID = event.getIdentifiant()+event.getEmplacement();
+                Integer eventID = event.getIdentifiant();
                 Integer agentID = ((Agent)entry.getValue()).getId();
 
                 convetedEventAgentIds.put(eventID, agentID);

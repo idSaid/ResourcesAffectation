@@ -27,9 +27,11 @@ public class EventReceiver {
             System.out.println("Received <" + event.toString() + ">");
         }
         try {
-            Map<String, Integer> matchedEvent = mapper.affectEventsGeneticMethod(events);
-            for (Map.Entry<String, Integer> entry : matchedEvent.entrySet()){
-                affectationSender.sendAllocation(new Pair<String, Integer>(entry.getKey(),entry.getValue()));
+            Map<Integer, Integer> matchedEvent = mapper.affectEventsGeneticMethod(events);
+            for (Map.Entry<Integer, Integer> entry : matchedEvent.entrySet()){
+                System.out.println(">>> entry key" + entry.getKey());
+                System.out.println(">>> entry value" + entry.getValue());
+                affectationSender.sendAllocation(new Pair<Integer, Integer>(entry.getKey(),entry.getValue()));
             }
         } catch (IOException e) {
             e.printStackTrace();

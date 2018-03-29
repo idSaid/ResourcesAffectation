@@ -31,12 +31,12 @@ public class AffectationController {
 
     @PostMapping(value = "/affectEvents", consumes = "application/json", produces = "application/json")
     @ResponseBody
-    public ResponseEntity<Map<String, Integer>> affectEventsGeneticMethod(@RequestBody TreeSet<Event> sortedEvents) throws IOException {
+    public ResponseEntity<Map<Integer, Integer>> affectEventsGeneticMethod(@RequestBody TreeSet<Event> sortedEvents) throws IOException {
 
         ArrayList<Agent> agents = new ArrayList<Agent>(agentDao.getFreeAgents());
         System.out.println(agents);
         Set<Map<Event, Agent>> bestSolutions;
-        Map<String, Integer> bestSolutionsInteger= new HashMap<>();
+        Map<Integer, Integer> bestSolutionsInteger= new HashMap<>();
         Set<Agent> callCenters;
 
         if(agents.size()<sortedEvents.size()){
@@ -61,7 +61,7 @@ public class AffectationController {
             }
 
 
-            Map<String, Integer> eventsCallCenters = mapper.mapEventstoCallCenters(eventsToAffectToCallCenters,callCenters);
+            Map<Integer, Integer> eventsCallCenters = mapper.mapEventstoCallCenters(eventsToAffectToCallCenters,callCenters);
 
             bestSolutionsInteger.putAll(eventsCallCenters);
 
@@ -75,8 +75,8 @@ public class AffectationController {
         return new ResponseEntity<>(bestSolutionsInteger, HttpStatus.OK);
     }
 
-    private Map<String, Integer> extractBestSolutionsIds(Set<Map<Event, Agent>> bestSolution){
-        Map<String, Integer> convetedEventAgentIds = new HashMap<>();
+    private Map<Integer, Integer> extractBestSolutionsIds(Set<Map<Event, Agent>> bestSolution){
+        Map<Integer, Integer> convetedEventAgentIds = new HashMap<>();
 
         for (Map<Event, Agent> key:
                 bestSolution) {
@@ -86,7 +86,7 @@ public class AffectationController {
                 System.out.println(entry.getKey() + "/" + entry.getValue());
 
                 Event event = ((Event)entry.getKey());
-                String eventID = event.getIdentifiant()+event.getEmplacement();
+                Integer eventID = event.getIdentifiant();
                 Integer agentID = ((Agent)entry.getValue()).getId();
 
                 convetedEventAgentIds.put(eventID, agentID);
