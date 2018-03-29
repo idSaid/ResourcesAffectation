@@ -12,7 +12,6 @@ public class ClientDaoImpl implements ClientDao {
 
     @Override
     public int getCluster(Client client) {
-        System.out.println(client.toString());
         int cluster = -1;
         try {
             PreparedStatement pstmt = PostgresConnection.getDbCon().conn.prepareStatement(
